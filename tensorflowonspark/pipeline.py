@@ -391,7 +391,7 @@ class TFEstimator(Estimator, TFParams, HasInputMapping,
         assert local_args.tfrecord_dir, "Please specify --tfrecord_dir to export DataFrame to TFRecord."
         if self.getInputMapping():
           # if input mapping provided, filter only required columns before exporting
-          dataset = dataset.select(self.getInputMapping().keys())
+          dataset = dataset.select(list(self.getInputMapping().keys()))
         logging.info("Exporting DataFrame {} as TFRecord to: {}".format(dataset.dtypes, local_args.tfrecord_dir))
         dfutil.saveAsTFRecords(dataset, local_args.tfrecord_dir)
         logging.info("Done saving")

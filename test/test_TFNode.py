@@ -25,7 +25,7 @@ class TFNodeTest(unittest.TestCase):
 
   def test_datafeed(self):
     """TFNode.DataFeed basic operations"""
-    mgr = TFManager.start('abc', ['input', 'output'], 'local')
+    mgr = TFManager.start(bytearray('abc', 'utf8'), ['input', 'output'], 'local')
 
     # insert 10 numbers followed by an end-of-feed marker
     q = mgr.get_queue('input')

@@ -2,6 +2,7 @@ import os
 import shutil
 import test
 import unittest
+import hdfs_util
 
 from tensorflowonspark import dfutil
 
@@ -20,6 +21,7 @@ class DFUtilTest(test.SparkTest):
   def setUp(self):
     # remove any prior test artifacts
     shutil.rmtree(self.tfrecord_dir, ignore_errors=True)
+    hdfs_util.rmtree(self.tfrecord_dir)
 
   def tearDown(self):
     # Note: don't clean up artifacts after test (in case we need to view/debug)
@@ -27,17 +29,18 @@ class DFUtilTest(test.SparkTest):
 
   def test_dfutils(self):
     # create a DataFrame of a single row consisting of standard types (str, int, int_array, float, float_array, binary)
-    row1 = ('text string', 1, [2, 3, 4, 5], -1.1, [-2.2, -3.3, -4.4, -5.5], bytearray(b'\xff\xfe\xfd\xfc'))
+    row1 = (bytearray(b'text string'), 1, [2, 3, 4, 5], -1.1, [-2.2, -3.3, -4.4, -5.5], bytearray(b'\xff\xfe\xfd\xfc'))
     rdd = self.sc.parallelize([row1])
     df1 = self.spark.createDataFrame(rdd, ['a', 'b', 'c', 'd', 'e', 'f'])
     print ("schema: {}".format(df1.schema))
 
     # save the DataFrame as TFRecords
     dfutil.saveAsTFRecords(df1, self.tfrecord_dir)
-    self.assertTrue(os.path.isdir(self.tfrecord_dir))
+    self.assertTrue(hdfs_util.isdir(self.tfrecord_dir))
+    # self.assertTrue(os.path.isdir(self.tfrecord_dir))
 
     # reload the DataFrame from exported TFRecords
-    df2 = dfutil.loadTFRecords(self.sc, self.tfrecord_dir, binary_features=['f'])
+    df2 = dfutil.loadTFRecords(self.sc, self.tfrecord_dir, binary_features=['a', 'f'])
     row2 = df2.take(1)[0]
 
     print("row_saved: {}".format(row1))

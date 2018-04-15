@@ -109,7 +109,7 @@ def toTFExample(dtypes):
       elif dtype in int64_dtypes:
         feature = (name, tf.train.Feature(int64_list=tf.train.Int64List(value=[row[name]])))
       elif dtype in bytes_dtypes:
-        feature = (name, tf.train.Feature(bytes_list=tf.train.BytesList(value=[str(row[name])])))
+        feature = (name, tf.train.Feature(bytes_list=tf.train.BytesList(value=[bytes(row[name])])))
       elif dtype in float_list_dtypes:
         feature = (name, tf.train.Feature(float_list=tf.train.FloatList(value=row[name])))
       elif dtype in int64_list_dtypes:

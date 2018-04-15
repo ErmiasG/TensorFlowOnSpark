@@ -3,6 +3,7 @@ import os
 import shutil
 import test
 import unittest
+import hdfs_util
 
 from tensorflowonspark import TFCluster, dfutil
 from tensorflowonspark.pipeline import HasBatchSize, HasSteps, Namespace, TFEstimator, TFParams
@@ -25,7 +26,7 @@ class PipelineTest(test.SparkTest):
     # define model_dir and export_dir for tests
     cls.model_dir = os.getcwd() + os.sep + "test_model"
     cls.export_dir = os.getcwd() + os.sep + "test_export"
-    cls.tfrecord_dir = os.getcwd() + os.sep + "test_tfr"
+    cls.tfrecord_dir = os.getcwd() + os.sep + "test_tfr_pip"
 
   @classmethod
   def tearDownClass(cls):
@@ -36,6 +37,9 @@ class PipelineTest(test.SparkTest):
     shutil.rmtree(self.model_dir, ignore_errors=True)
     shutil.rmtree(self.export_dir, ignore_errors=True)
     shutil.rmtree(self.tfrecord_dir, ignore_errors=True)
+    hdfs_util.rmtree(self.model_dir)
+    hdfs_util.rmtree(self.export_dir)
+    hdfs_util.rmtree(self.tfrecord_dir)
 
   def tearDown(self):
     # Note: don't clean up artifacts after test (in case we need to view/debug)
@@ -177,7 +181,8 @@ class PipelineTest(test.SparkTest):
                   .setBatchSize(10)
     model = estimator.fit(df)
     self.assertTrue(os.path.isdir(self.model_dir))
-    self.assertTrue(os.path.isdir(self.tfrecord_dir))
+    # self.assertTrue(os.path.isdir(self.tfrecord_dir))
+    self.assertTrue(hdfs_util.isdir(self.tfrecord_dir))
 
     df_tmp = dfutil.loadTFRecords(self.sc, self.tfrecord_dir)
     self.assertEquals(df_tmp.columns, ['col1', 'col2'])
