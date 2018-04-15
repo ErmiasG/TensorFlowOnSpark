@@ -26,7 +26,7 @@ class PipelineTest(test.SparkTest):
     # define model_dir and export_dir for tests
     cls.model_dir = os.getcwd() + os.sep + "test_model"
     cls.export_dir = os.getcwd() + os.sep + "test_export"
-    cls.tfrecord_dir = os.getcwd() + os.sep + "test_tfr_pip"
+    cls.tfrecord_dir = os.getcwd() + os.sep + "test_tfr"
 
   @classmethod
   def tearDownClass(cls):

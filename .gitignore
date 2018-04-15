@@ -7,3 +7,4 @@ docs/.doctrees
 *.log
 *.jar
 .DS_Store
+.idea
