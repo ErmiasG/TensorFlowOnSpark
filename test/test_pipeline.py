@@ -178,7 +178,8 @@ class PipelineTest(test.SparkTest):
                   .setTFRecordDir(self.tfrecord_dir) \
                   .setClusterSize(self.num_workers) \
                   .setNumPS(1) \
-                  .setBatchSize(10)
+                  .setBatchSize(10) \
+                  .setSteps(10000)
     model = estimator.fit(df)
     self.assertTrue(os.path.isdir(self.model_dir))
     # self.assertTrue(os.path.isdir(self.tfrecord_dir))
@@ -203,7 +204,8 @@ class PipelineTest(test.SparkTest):
                   .setTFRecordDir(self.tfrecord_dir) \
                   .setClusterSize(self.num_workers) \
                   .setNumPS(1) \
-                  .setBatchSize(10)
+                  .setBatchSize(10) \
+                  .setSteps(10000)
     model = estimator.fit(trainDF)
     self.assertTrue(os.path.isdir(self.model_dir))
 
