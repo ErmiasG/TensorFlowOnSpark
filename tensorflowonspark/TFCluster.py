@@ -145,7 +145,6 @@ class TFCluster(object):
         while not done:
           st = self.sc.statusTracker()
           jobs = st.getActiveJobsIds()
-          logging.info("Remaining : {0} job/s".format(len(jobs)))
           if len(jobs) > 0:
             stages = st.getActiveStageIds()
             for i in stages:
