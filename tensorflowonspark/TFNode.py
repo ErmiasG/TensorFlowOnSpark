@@ -81,7 +81,7 @@ def start_cluster_server(ctx, num_gpus=1, rdma=False):
           num_gpus = 1
 
         # Find a free gpu(s) to use
-        gpus_to_use = gpu_info.get_gpus(num_gpus=num_gpus, executor_id=ctx.executor_id)
+        gpus_to_use = gpu_info.get_gpus(num_gpu=num_gpus, executor_id=ctx.executor_id)
         gpu_prompt = "GPU" if num_gpus == 1 else "GPUs"
         logging.info("{0}: Using {1}: {2}".format(ctx.worker_num, gpu_prompt, gpus_to_use))
 

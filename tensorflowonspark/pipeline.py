@@ -589,7 +589,7 @@ def single_node_env(args):
     # GPU
     num_gpus = args.num_gpus if 'num_gpus' in args else 1
     executor_id = args.executor_id if 'executor_id' in args else 1
-    gpus_to_use = gpu_info.get_gpus(num_gpus=num_gpus, executor_id=executor_id)
+    gpus_to_use = gpu_info.get_gpus(num_gpu=num_gpus, executor_id=executor_id)
     logging.info("Using gpu(s): {0}".format(gpus_to_use))
     os.environ['CUDA_VISIBLE_DEVICES'] = gpus_to_use
     # Note: if there is a GPU conflict (CUDA_ERROR_INVALID_DEVICE), the entire task will fail and retry.
