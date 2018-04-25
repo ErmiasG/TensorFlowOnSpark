@@ -52,15 +52,15 @@ def get_gpus(num_gpu=1):
     Comma-delimited string of GPU ids, or raises an Exception if the requested number of GPUs could not be found.
   """
   # get list of gpus (index, uuid)
-  list_gpus = subprocess.check_output(["nvidia-smi", "--list-gpus"]).decode()
+  list_gpus = subprocess.check_output(['nvidia-smi', '--query-gpu=gpu_uuid,index', '--format=csv,noheader,nounits']).decode()
   logging.debug("all GPUs:\n{0}".format(list_gpus))
 
   # parse index and guid
   gpus = [x for x in list_gpus.split('\n') if len(x) > 0]
 
   def parse_gpu(gpu_str):
-    cols = gpu_str.split(' ')
-    return cols[5].split(')')[0], cols[1].split(':')[0]
+    cols = gpu_str.split(',')
+    return cols[0], cols[1]
   gpu_list = [parse_gpu(gpu) for gpu in gpus]
 
   # randomize the search order to get a better distribution of GPUs
