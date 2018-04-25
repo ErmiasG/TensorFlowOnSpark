@@ -141,7 +141,7 @@ def run(fn, tf_args, cluster_meta, tensorboard, log_dir, queues, background):
 
     # run quick check of GPU infrastructure if using tensorflow-gpu
     if tf.test.is_built_with_cuda():
-      gpus_to_use = gpu_info.get_gpus(1)
+      gpus_to_use = gpu_info.get_gpus(num_gpu=1)
 
     # assign TF job/task based on provided cluster_spec template (or use default/null values)
     job_name = 'default'
@@ -281,7 +281,7 @@ def run(fn, tf_args, cluster_meta, tensorboard, log_dir, queues, background):
     os.environ['TF_CONFIG'] = tf_config
     if tf.test.is_built_with_cuda():
       num_gpus = tf_args.num_gpus if 'num_gpus' in tf_args else 1
-      gpus_to_use = gpu_info.get_gpus(num_gpus)
+      gpus_to_use = gpu_info.get_gpus(num_gpus=num_gpus, executor_id=executor_id)
       gpu_str = "GPUs" if num_gpus > 1 else "GPU"
       logging.debug("Requested {} {}, setting CUDA_VISIBLE_DEVICES={}".format(num_gpus, gpu_str, gpus_to_use))
       os.environ['CUDA_VISIBLE_DEVICES'] = gpus_to_use

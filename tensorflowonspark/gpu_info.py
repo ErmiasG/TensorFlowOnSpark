@@ -40,7 +40,7 @@ def _get_gpu():
   return gpu
 
 
-def get_gpus(num_gpu=1):
+def get_gpus(num_gpu=1, executor_id=1):
   """Get list of free GPUs according to nvidia-smi.
 
   This will retry for ``MAX_RETRIES`` times until the requested number of GPUs are available.
@@ -69,6 +69,7 @@ def get_gpus(num_gpu=1):
   free_gpus = []
   retries = 0
   while len(free_gpus) < num_gpu and retries < MAX_RETRIES:
+    time.sleep(int(executor_id)*5)
     smi_output = subprocess.check_output(["nvidia-smi", "--format=csv,noheader,nounits", "--query-compute-apps=gpu_uuid"]).decode()
     logging.debug("busy GPUs:\n{0}".format(smi_output))
     busy_uuids = [x for x in smi_output.split('\n') if len(x) > 0]
